@@ -1,0 +1,14 @@
+ТЕСТ 1
+все параметры верные
+python pr_2.py -n name -u https://github.com/test-repo -m test -v 5.10.2 -o graph.png -F ascii -f packet
+вывод: ключ-значение
+
+ТЕСТ 2
+пустое имя пакета
+python pr_2.py -n "   " -u https://github.com/test-repo -m test -v 5.10.2 -o out/graph.png -F ascii -f junit
+вывод: строка "укажите --packet_name"
+
+ТЕСТ 3
+пустой выходной файл (на этом этапе можно)
+python pr_2.py -n name -u https://github.com/test-repo -m test -v 5.10.2 -F ascii -f junit
+вывод: ключ-значение с пустой строкой у выходного файла 
