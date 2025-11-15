@@ -1,0 +1,2 @@
+# запуск с ошибкой неправильный режим
+-n junit -u https://github.com/test-repo -m dev -v 5.10.2 -o out/graph.png -F ascii -f junit

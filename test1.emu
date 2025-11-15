@@ -1,0 +1,4 @@
+# успешный запуск
+python pr_2.py -n name -u https://github.com/test-repo -m test -v 5.10.2 -o graph.png -F ascii -f packet
+
+ТРЕТИЙ ЭТАП И ТД НА ДРУГОЙ ВЕТКЕ
