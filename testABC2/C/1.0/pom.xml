@@ -6,6 +6,10 @@
     <version>1.0</version>
 
     <dependencies>
-
+        <dependency>
+            <groupId>TEST</groupId>
+            <artifactId>A</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>
