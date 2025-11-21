@@ -1,0 +1,29 @@
+ТЕСТ 1
+правильный вывод прямых зависимостей
+python pr2_2.py -n junit -u test -m test -v 5.10.2 --show_direct_deps 
+вывод: 
+прямые зависимости пакета:
+- ляля:ля:5.10.2
+- бебе:бе:3.25.3
+параметры, настраиваемые пользователем (ключ-значение):
+packet_name - junit
+url_link_repo - test
+repo_work_mode - test
+packet_version - 5.10.2
+output_file - 
+format - 
+packet_filter - 
+
+
+ТЕСТ 2
+пустое имя пакета
+python pr2_2.py -n nodeps -u test -m test -v 1.0.0 --show_direct_deps 
+вывод: пустые зависимости
+
+ТЕСТ 3
+флаг вывода зависимостей указан но не передан путь к репозиторию
+python pr2_2.py -n junit -m test -v 5.10.2 --show_direct_deps
+вывод:
+строка для --show_direct_deps требуется параметр --url_link_repo
+
+
