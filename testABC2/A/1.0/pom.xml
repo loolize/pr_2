@@ -2,10 +2,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>TEST</groupId>
-    <artifactId>C</artifactId>
+    <artifactId>A</artifactId>
     <version>1.0</version>
 
     <dependencies>
-
+        <dependency>
+            <groupId>TEST</groupId>
+            <artifactId>B</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

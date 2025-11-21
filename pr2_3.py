@@ -4,6 +4,8 @@ import re  # для проверки формата версии
 import sys # для кода выхода
 from urllib.parse import urlparse  # проверка на юрл
 import xml.etree.ElementTree as ET  # для разбора pom.xml
+from collections import deque  # очередь для BFS
+
 
 # допустимые значения
 SUPPORTED_FORMATS = {"ascii"} # формат вывода аски
@@ -21,14 +23,6 @@ def is_url_or_path(value: str) -> bool:
 
 
 
-
-
-
-
-
-
-
-#NEW
 # поиск зависимостей
 def read_pom(pom_path: str): # в мавен зависимости описаны в пом, открываем пом и достаем список <dependency>
     
@@ -60,7 +54,7 @@ def read_pom(pom_path: str): # в мавен зависимости описан
 
     return deps  # возвращаем список зависимостей
 
-#NEW
+
 # поиск прямых завис
 def show_direct_dependens(path: str, name: str, version: str):
     # конструируем путь к пом
@@ -87,6 +81,73 @@ def show_direct_dependens(path: str, name: str, version: str):
 
 
 
+
+
+# NEW
+# пострроение графа зависимостей обходом в ширину
+
+def build_dependency_graph_bfs(start_name: str, start_version: str, repo_path: str, packet_filter: str | None = None):
+    graph: dict[str, list[str]] = {}
+    visited: set[tuple[str, str]] = set() # множество посещенных пакетов
+
+    # двусторонняя очередь для бфс, доб в конец извл из начала
+    q = deque()
+
+    # ддоб в пакет корень
+    q.append((start_name, start_version))
+    visited.add((start_name, start_version))
+
+    while q:
+        name, version = q.popleft() # сначала первый эл очереди
+        node_key = f"{name}:{version}"
+
+        # если вершинае сть в словаре ничего не меняем
+        # для вершин без детей
+        graph.setdefault(node_key, [])
+
+        # путь к пом
+        pom_path = os.path.join(repo_path, name, version, "pom.xml")
+        deps = read_pom(pom_path)
+
+        if deps is None: # если пом не найден 
+            continue
+
+        for dep in deps:
+            dep_name = dep["artifactId"]
+            dep_version = dep["version"]
+
+            if not dep_name:# зависимость без имени
+                continue
+
+            # фильтр по подстроке
+            if packet_filter and packet_filter in dep_name:
+                continue
+
+            # строка для соседа
+            neighbor_key = f"{dep_name}:{dep_version}" if dep_version else dep_name
+            graph[node_key].append(neighbor_key)
+
+            state = (dep_name, dep_version)
+            # защита от циклов
+            if state not in visited:
+                visited.add(state)
+                if dep_version:
+                    q.append(state)
+
+    return graph
+
+
+#NEW 
+# вывод графа в текстовом виде
+def print_graph_ascii(graph: dict[str, list[str]]):
+    print("\nграф зависимостей:")
+    if not graph:
+        print("граф пуст")
+        return
+
+    for node, neighbors in graph.items():
+        deps_str = ", ".join(neighbors) if neighbors else ""
+        print(f"{node} - {deps_str}")
 
 
 
@@ -148,12 +209,19 @@ def main():
         help="Подстрока для фильтрации пакетов."
     )
 
-    #NEW
     parser.add_argument(
         "--show_direct_deps",
         action="store_true", # есои пользователь указал
         help="Вывести прямые зависимости пакета."
-)
+    )
+
+    # NEW
+    parser.add_argument(
+        "--build_graph",
+        action="store_true",
+        help="Вывести граф зависимости."
+    )
+
 
 
 
@@ -202,7 +270,6 @@ def main():
         sys.exit(2)
 
 
-    #NEW
     if args.show_direct_deps: # если есть запрос
         if args.url_link_repo is None: # нет пути
             print("для --show_direct_deps требуется параметр --url_link_repo для нахождения pom.xml")
@@ -212,6 +279,26 @@ def main():
             args.packet_name,
             args.packet_version
         )
+
+
+
+    #NEW 
+    # построение графа зависимостей
+    if args.build_graph:
+        if args.url_link_repo is None:
+            print("для --build_graph требуется параметр --url_link_repo")
+            sys.exit(2)
+
+        graph = build_dependency_graph_bfs(
+            start_name=args.packet_name,
+            start_version=args.packet_version,
+            repo_path=args.url_link_repo,
+            packet_filter=args.packet_filter
+        )
+
+        print_graph_ascii(graph)
+
+
 
     # вывод параметров
     print("параметры, настраиваемые пользователем (ключ-значение):")
