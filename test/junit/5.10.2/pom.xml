@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>проект</groupId>
+    <artifactId>пакет</artifactId>
+    <version>5.10.2</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>ляля</groupId>
+            <artifactId>ля</artifactId>
+            <version>5.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>бебе</groupId>
+            <artifactId>бе</artifactId>
+            <version>3.25.3</version>
+        </dependency>
+    </dependencies>
+</project>
