@@ -1,0 +1,7 @@
+ТЕСТ 1
+просто порядок загрузки
+python pr2_4.py -n junit -u test -m test -v 5.10.2 --load_order
+
+ТЕСТ 2
+# с фильтром по подстроке в имени пакета
+python pr2_4.py -n junit -u test -m test -v 5.10.2 --load_order -f ля
