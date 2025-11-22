@@ -1,0 +1,22 @@
+ТЕСТ 1
+граф с одним корнем и двумя подчиненными
+python pr2_5.py -n junit -u test -m test -v 5.10.2 --build_graph -o output.svg
+
+ТЕСТ 2
+граф с корнем А и ребенком В у кот ребенок С
+pr_2 % python pr2_5.py -n A -u testABC -m test -v 1.0 --build_graph -o output.svg
+
+ТЕСТ 3
+граф с одним корнем - папка 
+python pr2_5.py -n nodeps -u test -m test -v 1.0.0 --build_graph -o output.svg
+
+ТЕСТ 4
+вывод аски дерева
+python pr2_5.py -n junit -u test -m test -v 5.10.2 --build_graph -F ascii
+
+зависимости в виде ASCII-дерева:
+junit:5.10.2
+   ├─ ля:5.10.2
+   └─ бе:3.25.3
+
+   
